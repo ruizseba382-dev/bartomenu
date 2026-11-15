@@ -1,0 +1,27 @@
+name: Build Barto Menu
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar archivos
+        uses: actions/checkout@v4
+
+      - name: Preparar MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Compilar Barto Menu
+        run: msbuild BartoMenu_Source/BartoMenu.csproj /p:Configuration=Release
+
+      - name: Guardar DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: BartoMenu
+          path: BartoMenu_Source/**/bin/Release/*.dll
+          

@@ -1,9 +1,11 @@
+
 name: Build Barto Menu
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
@@ -16,6 +18,9 @@ jobs:
       - name: Preparar MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: Restaurar dependencias
+        run: dotnet restore BartoMenu_Source/BartoMenu.csproj
+
       - name: Compilar Barto Menu
         run: msbuild BartoMenu_Source/BartoMenu.csproj /p:Configuration=Release
 
@@ -23,5 +28,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: BartoMenu
-          path: BartoMenu_Source/**/bin/Release/*.dll
-          
+          path: BartoMenu_Source/**/bin/Release/**/*.dll
+
